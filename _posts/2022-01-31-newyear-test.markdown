@@ -2,7 +2,7 @@
 layout: post
 title:  "블로그를 만들었다2"
 date:   2022-01-31 23:38:00 +0300
-image: 02.jpg
+# image: 02.jpg
 tags:   TagTest2
 ---
 새로운 글!

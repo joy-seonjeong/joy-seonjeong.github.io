@@ -4,218 +4,221 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Joy Kim</title>
-  <!-- Google Fonts: Inter & JetBrains Mono -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Google Fonts: Inter & Georgia (System fallback) -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <!-- Chart.js & Marked.js CDNs -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <style>
     :root {
-      --bg-warm: #f5f5f3;      /* 차갑고 정돈된 스위스식 종이 질감 아이보리 */
-      --bg-card: #ffffff;
-      --border-color: #111111;  /* 직각 마감을 위한 단단한 블랙 보더 선 */
-      --text-primary: #111111;
-      --text-secondary: #555555;
-      --text-muted: #888888;
-      --accent-blue: #0f4c81;   /* 묵직한 톤다운 인디고 블루 */
-      --accent-green: #196f3d;  /* 다운그레이드된 포레스트 그린 */
-      --accent-red: #900c3f;    /* 차분한 딥 버건디 레드 */
-      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      --font-mono: 'JetBrains Mono', monospace;
+      --bg-main: #ffffff;         /* 완전한 화이트 배경 */
+      --bg-sub: #fafafa;          /* 은은한 미색 */
+      --border-light: #eaeaea;    /* 미디엄 스타일의 얇고 연한 회색 구분선 */
+      --text-primary: #191919;    /* 미디엄 고유의 부드러운 블랙 */
+      --text-secondary: #757575;  /* 설명용 미디엄 그레이 */
+      --text-muted: #b3b3b3;
+      --accent-blue: #1a8917;     /* 미디엄의 상징색인 정갈한 포레스트 그린 톤 */
+      --accent-dark: #292929;
+      --font-serif: "Georgia", Cambria, "Times New Roman", Times, serif; /* 저널 스타일 제목용 */
+      --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; border-radius: 0 !important; } /* 모든 둥근 모서리 강제 박멸 */
+    * { box-sizing: border-box; margin: 0; padding: 0; border-radius: 0 !important; }
 
     body {
-      background-color: var(--bg-warm);
+      background-color: var(--bg-main);
       color: var(--text-primary);
       font-family: var(--font-sans);
-      line-height: 1.5;
-      padding: 3.5rem 2rem;
-      font-size: 13.5px; /* 컴팩트하고 오밀조밀한 프로 스케일 */
-      letter-spacing: -0.02em;
+      line-height: 1.6;
+      padding: 3rem 4rem; /* 화면 양옆을 시원하게 쓰기 위한 넉넉한 패딩 */
+      font-size: 14px;
+      letter-spacing: -0.01em;
+    }
+    @media (max-width: 768px) {
+      body { padding: 2rem 1.5rem; }
     }
 
+    /* 화면 전체 너비를 채우는 풀 와이드 컨테이너 */
     .container {
-      max-width: 1040px;
-      margin: 0 auto;
+      width: 100%;
+      max-width: 100%; /* 좌우 공간 제한 해제 */
     }
 
-    /* 헤더 및 메뉴 (Brutalist Grid) */
+    /* 헤더 (Medium Style Minimalist Navigation) */
     header {
       display: flex;
       justify-content: space-between;
-      align-items: flex-end;
-      border-bottom: 2px solid var(--border-color);
+      align-items: center;
+      border-bottom: 1px solid var(--border-light);
       padding-bottom: 1.5rem;
-      margin-bottom: 2.5rem;
+      margin-bottom: 3rem;
     }
     @media (max-width: 768px) {
       header { flex-direction: column; align-items: flex-start; gap: 1.5rem; }
     }
 
     .logo {
-      font-size: 1.25rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: -0.04em;
+      font-family: var(--font-serif);
+      font-size: 1.5rem;
+      font-weight: 700;
       color: var(--text-primary);
       cursor: pointer;
+      letter-spacing: -0.03em;
     }
 
     .main-nav {
       display: flex;
-      gap: 0px;
-      border: 1px solid var(--border-color);
-      background-color: var(--bg-card);
+      gap: 1.75rem;
     }
 
     .nav-btn {
       background: transparent;
       border: none;
-      border-right: 1px solid var(--border-color);
       color: var(--text-secondary);
-      padding: 0.6rem 1.4rem;
-      font-size: 0.82rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
+      padding: 0.25rem 0;
+      font-size: 0.88rem;
+      font-weight: 500;
       cursor: pointer;
-      transition: all 0.15s ease;
+      position: relative;
+      transition: color 0.15s ease;
     }
-    .nav-btn:last-child { border-right: none; }
     .nav-btn:hover {
-      background-color: var(--bg-warm);
       color: var(--text-primary);
     }
     .nav-btn.active {
-      background-color: var(--text-primary);
-      color: #ffffff;
-    }
-
-    /* 카드 스타일 (직각 & 하드 섀도우) */
-    .card {
-      background-color: var(--bg-card);
-      border: 1px solid var(--border-color);
-      padding: 2rem;
-      box-shadow: 3px 3px 0px var(--border-color); /* 시크한 블랙 플랫 하드 섀도우 */
-      margin-bottom: 2rem;
-    }
-
-    .card-title {
-      font-size: 1.05rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: -0.03em;
-      margin-bottom: 1.5rem;
-      border-bottom: 1px solid var(--border-color);
-      padding-bottom: 0.5rem;
       color: var(--text-primary);
+      font-weight: 700;
+    }
+    .nav-btn.active::after {
+      content: '';
+      position: absolute;
+      bottom: -1.6rem;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      background-color: var(--text-primary);
     }
 
-    /* 세부 중첩 탭 (Asset 하위 전용 - 직각 그리드 형태) */
+    /* 패널 / 섹션 (라인 경계 기반 미니멀리즘) */
+    .section-panel {
+      border-bottom: 1px solid var(--border-light);
+      padding-bottom: 3rem;
+      margin-bottom: 3rem;
+    }
+
+    .section-title {
+      font-family: var(--font-serif);
+      font-size: 1.65rem;
+      font-weight: 700;
+      margin-bottom: 2rem;
+      color: var(--text-primary);
+      letter-spacing: -0.02em;
+    }
+
+    /* 세부 중첩 탭 (Asset 하부 메뉴 - 미디엄 스타일 탭바) */
     .sub-tabs-bar {
       display: flex;
-      border: 1px solid var(--border-color);
-      background-color: var(--bg-warm);
-      margin-bottom: 1.5rem;
-      width: fit-content;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+      border-bottom: 1px solid var(--border-light);
+      padding-bottom: 0.5rem;
     }
 
     .sub-tab-btn {
       background: transparent;
       border: none;
-      border-right: 1px solid var(--border-color);
       color: var(--text-secondary);
-      font-weight: 700;
-      font-size: 0.8rem;
-      text-transform: uppercase;
-      letter-spacing: 0.02em;
+      font-weight: 600;
+      font-size: 0.88rem;
       cursor: pointer;
-      padding: 0.5rem 1.25rem;
-      transition: all 0.15s ease;
+      padding: 0.25rem 0;
+      position: relative;
+      transition: color 0.15s ease;
     }
-    .sub-tab-btn:last-child { border-right: none; }
-    .sub-tab-btn:hover { color: var(--text-primary); background-color: rgba(0,0,0,0.03); }
+    .sub-tab-btn:hover { color: var(--text-primary); }
     .sub-tab-btn.active {
-      background-color: var(--text-primary);
-      color: #ffffff;
+      color: var(--accent-blue);
+    }
+    .sub-tab-btn.active::after {
+      content: '';
+      position: absolute;
+      bottom: -0.6rem;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background-color: var(--accent-blue);
     }
 
-    /* 종목 전환 탭 (더욱 컴팩트한 모노 격자) */
+    /* 종목 스위칭 탭 */
     .symbol-tabs {
       display: flex;
-      margin-bottom: 1.5rem;
-      border: 1px solid var(--border-color);
-      width: fit-content;
+      gap: 0.5rem;
+      margin-bottom: 2rem;
     }
     .symbol-btn {
-      background-color: var(--bg-card);
-      border: none;
-      border-right: 1px solid var(--border-color);
+      background-color: var(--bg-sub);
+      border: 1px solid var(--border-light);
       color: var(--text-secondary);
-      padding: 0.45rem 1rem;
-      font-family: var(--font-mono);
-      font-size: 0.78rem;
-      font-weight: 700;
+      padding: 0.4rem 1.1rem;
+      font-size: 0.8rem;
+      font-weight: 600;
       cursor: pointer;
+      transition: all 0.15s ease;
     }
-    .symbol-btn:last-child { border-right: none; }
-    .symbol-btn:hover { background-color: var(--bg-warm); }
+    .symbol-btn:hover { border-color: var(--text-primary); color: var(--text-primary); }
     .symbol-btn.active {
-      background-color: var(--accent-blue);
+      background-color: var(--text-primary);
       color: #ffffff;
+      border-color: var(--text-primary);
     }
 
-    /* KPI Grid (플랫 직각 카드화) */
+    /* KPI Grid (경계선이 얇고 극도로 정갈한 카드) */
     .kpi-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 1.25rem;
-      margin-bottom: 1.5rem;
+      gap: 2rem;
+      margin-bottom: 2.5rem;
     }
     .kpi-card {
-      background-color: var(--bg-card);
-      border: 1px solid var(--border-color);
-      padding: 1.25rem;
-      box-shadow: 2px 2px 0px var(--border-color);
+      border-left: 1px solid var(--text-primary); /* 미디엄 저널식 좌측 수직선 포인트 */
+      padding-left: 1.25rem;
     }
     .kpi-title {
-      font-size: 0.72rem;
-      color: var(--text-muted);
+      font-size: 0.78rem;
+      color: var(--text-secondary);
       text-transform: uppercase;
-      font-weight: 700;
+      font-weight: 600;
       letter-spacing: 0.05em;
       margin-bottom: 0.35rem;
     }
     .kpi-value {
-      font-family: var(--font-mono); /* 데이터를 프로페셔널하게 */
-      font-size: 1.35rem;
+      font-size: 1.8rem;
       font-weight: 700;
       color: var(--text-primary);
+      letter-spacing: -0.03em;
     }
-    .kpi-value.positive { color: var(--accent-green); }
+    .kpi-value.positive { color: var(--accent-blue); } /* 미디엄 그린으로 조율 */
     .kpi-value.negative { color: var(--accent-red); }
     .kpi-sub {
-      font-size: 0.8rem;
+      font-size: 0.85rem;
       color: var(--text-secondary);
       margin-top: 0.25rem;
     }
 
-    /* Split Layout */
+    /* Split Layout (가로폭을 시원하게 채우는 그리드) */
     .split-layout {
       display: grid;
-      grid-template-columns: 2.2fr 1fr;
-      gap: 1.5rem;
-      margin-bottom: 1.5rem;
+      grid-template-columns: 2.5fr 1fr;
+      gap: 3rem;
+      margin-bottom: 2rem;
     }
-    @media (max-width: 800px) {
-      .split-layout { grid-template-columns: 1fr; }
+    @media (max-width: 900px) {
+      .split-layout { grid-template-columns: 1fr; gap: 2rem; }
     }
 
     .chart-container {
       position: relative;
-      height: 310px;
+      height: 350px;
       width: 100%;
     }
 
@@ -223,173 +226,164 @@
     .stat-item {
       display: flex;
       justify-content: space-between;
-      padding: 0.75rem 0;
-      border-bottom: 1px dashed var(--border-color);
-      font-size: 0.88rem;
+      padding: 0.85rem 0;
+      border-bottom: 1px solid var(--border-light);
+      font-size: 0.92rem;
     }
     .stat-item:last-child { border-bottom: none; }
     .stat-label { color: var(--text-secondary); }
-    .stat-val { font-family: var(--font-mono); font-weight: 600; }
+    .stat-val { font-weight: 600; }
 
     .notice-box {
-      background-color: var(--bg-warm);
-      border-left: 2px solid var(--border-color);
-      padding: 0.85rem;
-      margin-top: 1rem;
-      font-size: 0.78rem;
+      background-color: var(--bg-sub);
+      border-left: 2px solid var(--text-primary);
+      padding: 1rem;
+      margin-top: 1.5rem;
+      font-size: 0.82rem;
       color: var(--text-secondary);
-      line-height: 1.5;
+      line-height: 1.6;
     }
 
-    /* Tables (직선적 미니멀 테이블) */
+    /* Tables (가로 구분선 위주의 정갈한 저널식 테이블) */
     .table-wrapper { overflow-x: auto; }
     .table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 0.85rem;
+      font-size: 0.9rem;
     }
     .table th, .table td {
-      padding: 0.75rem 0.85rem;
-      border-bottom: 1px solid var(--border-color);
+      padding: 0.85rem 1rem;
+      border-bottom: 1px solid var(--border-light);
     }
     .table th {
-      background-color: var(--bg-warm);
+      background-color: var(--bg-sub);
       color: var(--text-primary);
       font-weight: 700;
-      font-size: 0.75rem;
+      font-size: 0.78rem;
       text-transform: uppercase;
       letter-spacing: 0.05em;
     }
-    .table td {
-      font-family: var(--font-mono); /* 수치는 모두 정합적인 고정폭으로 */
-    }
-    .table tr:hover { background-color: rgba(0,0,0,0.01); }
+    .table tr:hover { background-color: var(--bg-sub); }
 
     .badge-buy {
-      border: 1px solid var(--accent-red);
+      border-bottom: 1.5px solid var(--accent-red);
       color: var(--accent-red);
-      padding: 0.1rem 0.35rem;
-      font-family: var(--font-sans);
-      font-size: 0.7rem;
+      padding: 0 0.1rem;
+      font-size: 0.75rem;
       font-weight: 700;
-      text-transform: uppercase;
     }
     .badge-sell {
-      border: 1px solid var(--accent-green);
-      color: var(--accent-green);
-      padding: 0.1rem 0.35rem;
-      font-family: var(--font-sans);
-      font-size: 0.7rem;
+      border-bottom: 1.5px solid var(--accent-blue);
+      color: var(--accent-blue);
+      padding: 0 0.1rem;
+      font-size: 0.75rem;
       font-weight: 700;
-      text-transform: uppercase;
     }
     .badge-wait {
-      border: 1px solid var(--text-muted);
+      border-bottom: 1.5px solid var(--text-muted);
       color: var(--text-secondary);
-      padding: 0.1rem 0.35rem;
-      font-family: var(--font-sans);
-      font-size: 0.7rem;
+      padding: 0 0.1rem;
+      font-size: 0.75rem;
       font-weight: 700;
-      text-transform: uppercase;
     }
 
-    /* 👤 About 타임라인 */
+    /* About 타임라인 */
     .timeline {
       position: relative;
-      padding-left: 1.25rem;
-      border-left: 1.5px solid var(--border-color);
-      margin-top: 1.25rem;
+      margin-top: 1.5rem;
     }
     .timeline-item {
-      position: relative;
-      margin-bottom: 1.75rem;
+      display: grid;
+      grid-template-columns: 180px 1fr;
+      margin-bottom: 2rem;
+      border-bottom: 1px solid var(--border-light);
+      padding-bottom: 1.5rem;
     }
-    .timeline-item::before {
-      content: '';
-      position: absolute;
-      left: calc(-1.25rem - 4.5px);
-      top: 5px;
-      width: 8px;
-      height: 8px;
-      background-color: var(--text-primary);
+    @media (max-width: 600px) {
+      .timeline-item { grid-template-columns: 1fr; gap: 0.5rem; }
     }
     .timeline-date {
-      font-family: var(--font-mono);
-      font-size: 0.78rem;
-      color: var(--text-muted);
-      font-weight: 600;
+      font-family: var(--font-serif);
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text-secondary);
     }
     .timeline-title {
-      font-size: 0.92rem;
-      font-weight: 800;
+      font-size: 1.15rem;
+      font-weight: 700;
       color: var(--text-primary);
-      margin-top: 0.15rem;
+      margin-bottom: 0.5rem;
     }
     .timeline-desc {
-      font-size: 0.85rem;
+      font-size: 0.95rem;
       color: var(--text-secondary);
-      margin-top: 0.35rem;
+      line-height: 1.6;
     }
 
-    /* 📖 Story 블로그 */
+    /* Story 블로그 (Medium Story List) */
     .story-list {
       list-style: none;
     }
     .story-item {
+      padding: 2rem 0;
+      border-bottom: 1px solid var(--border-light);
+      cursor: pointer;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 1.1rem 0;
-      border-bottom: 1px dashed var(--border-color);
-      cursor: pointer;
     }
     .story-item:hover .story-title {
       color: var(--accent-blue);
-      text-decoration: underline;
     }
     .story-item:last-child { border-bottom: none; }
+    
+    .story-left {
+      max-width: 80%;
+    }
     .story-title {
+      font-family: var(--font-serif);
+      font-size: 1.35rem;
       font-weight: 700;
       color: var(--text-primary);
-      font-size: 0.92rem;
+      margin-bottom: 0.5rem;
       transition: color 0.15s ease;
     }
     .story-date {
-      font-family: var(--font-mono);
-      font-size: 0.78rem;
-      color: var(--text-muted);
+      font-size: 0.85rem;
+      color: var(--text-secondary);
     }
     .story-detail-btn {
       background-color: var(--text-primary);
       color: #ffffff;
       border: none;
-      padding: 0.4rem 0.85rem;
-      font-size: 0.78rem;
-      font-weight: 700;
-      text-transform: uppercase;
+      padding: 0.5rem 1.25rem;
+      font-size: 0.82rem;
+      font-weight: 600;
       cursor: pointer;
+      transition: opacity 0.15s ease;
     }
+    .story-detail-btn:hover { opacity: 0.9; }
 
-    /* 마크다운 파싱 컨테이너 */
+    /* 마크다운 상세페이지 */
     .markdown-body {
       color: var(--text-primary);
-      font-size: 0.88rem;
-      line-height: 1.6;
+      font-size: 1rem;
+      line-height: 1.65;
+      max-width: 800px; /* 독서용 가독성 최적 너비 */
     }
     .markdown-body h1, .markdown-body h2, .markdown-body h3 {
+      font-family: var(--font-serif);
       color: var(--text-primary);
-      margin-top: 1.5rem;
-      margin-bottom: 0.85rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: -0.02em;
+      margin-top: 2rem;
+      margin-bottom: 1rem;
+      font-weight: 700;
     }
-    .markdown-body h1 { font-size: 1.25rem; border-bottom: 1.5px solid var(--border-color); padding-bottom: 0.4rem; }
-    .markdown-body h2 { font-size: 1.05rem; }
-    .markdown-body h3 { font-size: 0.95rem; }
-    .markdown-body p { margin-bottom: 1rem; }
-    .markdown-body ul { margin-left: 1.2rem; margin-bottom: 1rem; }
-    .markdown-body li { margin-bottom: 0.4rem; }
+    .markdown-body h1 { font-size: 1.8rem; border-bottom: 1px solid var(--border-light); padding-bottom: 0.5rem; }
+    .markdown-body h2 { font-size: 1.4rem; }
+    .markdown-body h3 { font-size: 1.15rem; }
+    .markdown-body p { margin-bottom: 1.25rem; }
+    .markdown-body ul { margin-left: 1.5rem; margin-bottom: 1.25rem; }
+    .markdown-body li { margin-bottom: 0.5rem; }
   </style>
 </head>
 <body>
@@ -407,20 +401,20 @@
 
     <!-- 탭 1: Home -->
     <main id="view-home" class="view-panel">
-      <div class="card">
-        <h2 class="card-title">Overview</h2>
-        <div style="max-width: 780px;">
-          <p style="margin-bottom: 1.2rem; font-size: 0.92rem; color: var(--text-secondary);">
-            데이터 아키텍처와 개인 금융 포트폴리오의 안전성에 관해 연구하는 김선정(Joy Kim)의 독립 포털 공간입니다.
+      <div class="section-panel">
+        <h2 class="section-title">Overview</h2>
+        <div style="max-width: 900px;">
+          <p style="margin-bottom: 1.5rem; font-size: 1.05rem; color: var(--text-primary); font-family: var(--font-serif); line-height: 1.6;">
+            데이터 엔지니어링 및 퀀트 자산 관리에 대한 생각과 결과를 나누는 정적 포털 공간입니다.
           </p>
-          <p style="margin-bottom: 1.75rem; font-size: 0.92rem; color: var(--text-secondary);">
-            이곳은 매일 아침 미국 주식시장 마감 직후 동작하는 TQQQ/SOXL 10분할 무한매수 자동매매 모의투자 봇의 실시간 매매 성과를 관찰하고, 과거 5개년(2021~2026) 백테스팅 원본 시뮬레이션 성과를 시각적으로 정밀 분석하기 위해 구축되었습니다.
+          <p style="margin-bottom: 2rem; font-size: 0.95rem; color: var(--text-secondary);">
+            이곳은 매일 아침 미국 주식시장 마감 직후 구동되는 TQQQ/SOXL 10분할 무한매수 자동매매 봇의 실시간 성과를 감시하고, 과거 5개년(2021~2026) 백테스팅의 복합 성과 지표(CAGR, MDD, 승률)를 정밀 분석하기 위해 구축되었습니다.
           </p>
           <div class="notice-box">
-            ■ <b>PORTFOLIO INDEX NAVIGATION</b><br>
+            ■ <b>NAVIGATION INDEX</b><br>
             * <b>ABOUT</b> — 컬리(Kurly)에서의 업무 이력 및 기술 스택 개요.<br>
             * <b>ASSET</b> — 미국 레버리지 모의투자 실시간 결과 및 5개년 백테스트 대조 보고서.<br>
-            * <b>STORY</b> — 메모장과 마크다운으로 연동되는 가벼운 기술/일상 블로그 포스트.
+            * <b>STORY</b> — 마크다운 파일 업로드로 즉시 연동되어 편하게 발행하는 블로그 스토리.
           </div>
         </div>
       </div>
@@ -428,22 +422,26 @@
 
     <!-- 탭 2: About -->
     <main id="view-about" class="view-panel" style="display: none;">
-      <div class="card">
-        <h2 class="card-title">Professional Experience</h2>
-        <p style="margin-bottom: 1.5rem; color: var(--text-secondary); font-size: 0.92rem;">
-          대용량 데이터 처리 파이프라인의 설계와 인프라의 가치 구현을 주도해 왔습니다.
+      <div class="section-panel">
+        <h2 class="section-title">Professional Experience</h2>
+        <p style="margin-bottom: 2.5rem; color: var(--text-secondary); font-size: 0.98rem; max-width: 800px;">
+          대용량 데이터 수집 및 실시간 로그 아키텍처의 인프라 설계를 통해 비즈니스의 성장 가치를 증명해 왔습니다.
         </p>
 
         <div class="timeline">
           <div class="timeline-item">
-            <div class="timeline-date">2017 - 2022</div>
-            <div class="timeline-title">Kurly (컬리)</div>
-            <div class="timeline-desc">데이터 엔지니어링 및 클라우드 인프라 파트에서 실시간 로그 수집 아키텍처 구축 및 비즈니스 성장에 따른 인프라 최적화를 기획 및 관리했습니다.</div>
+            <div class="timeline-date">2017 — 2022</div>
+            <div>
+              <div class="timeline-title">Kurly (컬리)</div>
+              <div class="timeline-desc">데이터 엔지니어링 및 클라우드 인프라 파트에서 실시간 대용량 로그 수집 파이프라인 아키텍처를 설계했으며, 비즈니스 성장에 따른 인프라 최적화를 안정적으로 기획하고 관리했습니다.</div>
+            </div>
           </div>
           <div class="timeline-item">
-            <div class="timeline-date">2022 - PRESENT</div>
-            <div class="timeline-title">Quantitative Portfolio Engineering</div>
-            <div class="timeline-desc">토스 Open API 기반 자동 주문 연동, 예외 복구 및 yfinance 주가 모델링을 이용한 백테스팅 프레임워크 연구.</div>
+            <div class="timeline-date">2022 — PRESENT</div>
+            <div>
+              <div class="timeline-title">Quantitative Portfolio Engineering</div>
+              <div class="timeline-desc">토스 Open API 기반 자동 주문 연동, 예외 복구 및 yfinance 주가 모델링을 이용한 백테스팅 프레임워크 연구를 전담하고 있습니다.</div>
+            </div>
           </div>
         </div>
       </div>
@@ -451,7 +449,7 @@
 
     <!-- 탭 3: Asset (중첩 세부 탭 구조) -->
     <main id="view-asset" class="view-panel" style="display: none;">
-      <div class="card" style="padding-bottom: 1.5rem;">
+      <div class="section-panel">
         <!-- 세부 중첩 탭 바 -->
         <div class="sub-tabs-bar">
           <button class="sub-tab-btn active" id="subTabBtn-mock" onclick="switchAssetSubTab('mock')">실시간 모의투자 현황</button>
@@ -476,24 +474,24 @@
             <div class="kpi-card">
               <div class="kpi-title">비용차감 후 순자산</div>
               <div class="kpi-value" id="kpiNetAssets">$0.00 (+0%)</div>
-              <div class="kpi-sub" id="kpiNetAssetsKrw" style="color: var(--accent-green)">≈ 0 원</div>
+              <div class="kpi-sub" id="kpiNetAssetsKrw" style="color: var(--accent-blue)">≈ 0 원</div>
             </div>
             <div class="kpi-card">
               <div class="kpi-title">현재가 / 환율</div>
-              <div class="kpi-value" id="kpiClose" style="color: var(--accent-purple)">$0.00</div>
+              <div class="kpi-value" id="kpiClose" style="color: var(--text-primary)">$0.00</div>
               <div class="kpi-sub" id="kpiRate">0.00 원/$</div>
             </div>
           </div>
 
           <div class="split-layout">
-            <div class="kpi-card" style="box-shadow: none;">
-              <div class="card-title" style="font-size: 0.88rem; margin-bottom: 0.75rem; border-bottom: none; padding-bottom: 0;">가상 자산 추이 곡선</div>
+            <div>
+              <h3 style="font-size: 0.95rem; font-weight: 700; margin-bottom: 1rem; color: var(--text-primary);">가상 자산 추이 곡선</h3>
               <div class="chart-container">
                 <canvas id="mockChart"></canvas>
               </div>
             </div>
-            <div class="kpi-card" style="box-shadow: none;">
-              <div class="card-title" style="font-size: 0.88rem; margin-bottom: 0.75rem; border-bottom: none; padding-bottom: 0;">모의투자 진행 요약</div>
+            <div>
+              <h3 style="font-size: 0.95rem; font-weight: 700; margin-bottom: 1rem; color: var(--text-primary);">모의투자 진행 요약</h3>
               <ul class="stat-list">
                 <li class="stat-item"><span class="stat-label">진행 회차</span><span class="stat-val" id="statStep">0 / 10회차</span></li>
                 <li class="stat-item"><span class="stat-label">가상 보유량</span><span class="stat-val" id="statHoldings">0.00주</span></li>
@@ -509,7 +507,7 @@
             </div>
           </div>
 
-          <h3 style="font-size: 0.88rem; font-weight: 800; text-transform: uppercase; margin-top: 1.5rem; margin-bottom: 0.75rem; color: var(--text-primary);">가상 거래 일지 (Mock Trading Log)</h3>
+          <h3 style="font-size: 0.95rem; font-weight: 700; margin-top: 3rem; margin-bottom: 1rem; color: var(--text-primary);">가상 거래 일지 (Mock Trading Log)</h3>
           <div class="table-wrapper">
             <table class="table">
               <thead>
@@ -546,19 +544,19 @@
             </div>
             <div class="kpi-card">
               <div class="kpi-title">거래 승률</div>
-              <div class="kpi-value" id="btWinRate" style="color: var(--accent-purple)">0%</div>
+              <div class="kpi-value" id="btWinRate" style="color: var(--text-primary)">0%</div>
             </div>
           </div>
 
           <div class="split-layout">
-            <div class="kpi-card" style="box-shadow: none;">
-              <div class="card-title" style="font-size: 0.88rem; margin-bottom: 0.75rem; border-bottom: none; padding-bottom: 0;">5개년 누적 자산 성장 곡선</div>
+            <div>
+              <h3 style="font-size: 0.95rem; font-weight: 700; margin-bottom: 1rem; color: var(--text-primary);">5개년 누적 자산 성장 곡선</h3>
               <div class="chart-container">
                 <canvas id="btChart"></canvas>
               </div>
             </div>
-            <div class="kpi-card" style="box-shadow: none;">
-              <div class="card-title" style="font-size: 0.88rem; margin-bottom: 0.75rem; border-bottom: none; padding-bottom: 0;">시뮬레이션 통계 요약</div>
+            <div>
+              <h3 style="font-size: 0.95rem; font-weight: 700; margin-bottom: 1rem; color: var(--text-primary);">시뮬레이션 통계 요약</h3>
               <ul class="stat-list">
                 <li class="stat-item"><span class="stat-label">테스트 설정 원금</span><span class="stat-val" id="btCapital">$10,000</span></li>
                 <li class="stat-item"><span class="stat-label">최종 평가 자산</span><span class="stat-val" id="btFinalAsset">$24,850</span></li>
@@ -579,17 +577,17 @@
 
     <!-- 탭 4: Story -->
     <main id="view-story" class="view-panel" style="display: none;">
-      <div class="card" id="story-list-view">
-        <h2 class="card-title">Story</h2>
-        <p style="margin-bottom: 1.25rem; color: var(--text-secondary); font-size: 0.9rem;">
-          기록해 나가는 기술과 배움에 관한 생각의 단편들입니다.
+      <div class="section-panel" id="story-list-view">
+        <h2 class="section-title">Stories</h2>
+        <p style="margin-bottom: 2rem; color: var(--text-secondary); font-size: 0.95rem;">
+          기술적인 배움과 생각을 기록하고 발행하는 블로그 저널 공간입니다.
         </p>
         <ul class="story-list" id="storyListBody"></ul>
       </div>
 
       <!-- 마크다운 글 상세 화면 -->
-      <div class="card" id="story-detail-view" style="display: none; padding-top: 1.25rem;">
-        <button class="symbol-btn" style="margin-bottom: 1.5rem;" onclick="goBackToStoryList()">← 목록으로 돌아가기</button>
+      <div class="section-panel" id="story-detail-view" style="display: none;">
+        <button class="story-detail-btn" style="margin-bottom: 2.5rem;" onclick="goBackToStoryList()">← BACK TO LIST</button>
         <div id="storyMarkdownContent" class="markdown-body"></div>
       </div>
     </main>
@@ -794,9 +792,9 @@
         data: {
           labels: dates,
           datasets: [
-            { label: '세전 가상자산 ($)', data: rawAssets, borderColor: '#0f4c81', borderWidth: 2, fill: false, yAxisID: 'y-assets', pointRadius: 2 },
-            { label: '순자산 ($)', data: netAssets, borderColor: '#196f3d', borderWidth: 2, fill: false, yAxisID: 'y-assets', pointRadius: 2 },
-            { label: `${symbol} 주가 ($)`, data: prices, borderColor: '#d2cdc3', borderWidth: 1, borderDash: [2, 2], fill: false, yAxisID: 'y-price', pointRadius: 0 }
+            { label: '세전 가상자산 ($)', data: rawAssets, borderColor: '#1a8917', borderWidth: 2, fill: false, yAxisID: 'y-assets', pointRadius: 1 },
+            { label: '순자산 ($)', data: netAssets, borderColor: '#292929', borderWidth: 2, fill: false, yAxisID: 'y-assets', pointRadius: 1 },
+            { label: `${symbol} 주가 ($)`, data: prices, borderColor: '#eaeaea', borderWidth: 1, borderDash: [2, 2], fill: false, yAxisID: 'y-price', pointRadius: 0 }
           ]
         },
         options: {
@@ -805,17 +803,13 @@
           interaction: { mode: 'index', intersect: false },
           plugins: {
             legend: {
-              labels: {
-                font: {
-                  family: 'Inter'
-                }
-              }
+              labels: { font: { family: 'Inter', size: 11 } }
             }
           },
           scales: {
-            'y-assets': { type: 'linear', position: 'left', ticks: { font: { family: 'JetBrains Mono', size: 10 } } },
-            'y-price': { type: 'linear', position: 'right', grid: { drawOnChartArea: false }, ticks: { font: { family: 'JetBrains Mono', size: 10 } } },
-            x: { ticks: { font: { family: 'JetBrains Mono', size: 10 } } }
+            'y-assets': { type: 'linear', position: 'left', ticks: { font: { family: 'Inter', size: 10 } } },
+            'y-price': { type: 'linear', position: 'right', grid: { drawOnChartArea: false }, ticks: { font: { family: 'Inter', size: 10 } } },
+            x: { ticks: { font: { family: 'Inter', size: 10 } } }
           }
         }
       });
@@ -852,8 +846,8 @@
         data: {
           labels: chart.labels,
           datasets: [
-            { label: '무한매수법 자산 성장 ($)', data: chart.assets, borderColor: '#196f3d', borderWidth: 2.2, fill: false, pointRadius: 3 },
-            { label: `${symbol} 단순보유 수익 ($)`, data: chart.buyAndHold, borderColor: '#900c3f', borderWidth: 1.2, borderDash: [2, 2], fill: false, pointRadius: 1 }
+            { label: '무한매수법 자산 성장 ($)', data: chart.assets, borderColor: '#1a8917', borderWidth: 2, fill: false, pointRadius: 2 },
+            { label: `${symbol} 단순보유 수익 ($)`, data: chart.buyAndHold, borderColor: '#d73a49', borderWidth: 1, borderDash: [2, 2], fill: false, pointRadius: 0 }
           ]
         },
         options: {
@@ -862,16 +856,12 @@
           interaction: { mode: 'index', intersect: false },
           plugins: {
             legend: {
-              labels: {
-                font: {
-                  family: 'Inter'
-                }
-              }
+              labels: { font: { family: 'Inter', size: 11 } }
             }
           },
           scales: {
-            y: { type: 'linear', ticks: { font: { family: 'JetBrains Mono', size: 10 } } },
-            x: { ticks: { font: { family: 'JetBrains Mono', size: 10 } } }
+            y: { type: 'linear', ticks: { font: { family: 'Inter', size: 10 } } },
+            x: { ticks: { font: { family: 'Inter', size: 10 } } }
           }
         }
       });
@@ -893,11 +883,11 @@
           li.className = "story-item";
           li.onclick = () => readStoryDetail(story);
           li.innerHTML = `
-            <div>
-              <span class="story-title">${story.title}</span>
-              <div style="font-family: var(--font-mono); font-size:0.75rem; color: var(--text-muted); margin-top: 0.2rem;">${story.date}</div>
+            <div class="story-left">
+              <div class="story-title">${story.title}</div>
+              <div class="story-date">${story.date}</div>
             </div>
-            <button class="story-detail-btn">Open</button>
+            <button class="story-detail-btn">Read</button>
           `;
           listBody.appendChild(li);
         });

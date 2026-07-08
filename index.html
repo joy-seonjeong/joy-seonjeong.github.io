@@ -549,6 +549,25 @@
               </div>
             </div>
           </div>
+
+          <h3 style="font-size: 0.95rem; font-weight: 700; margin-top: 3rem; margin-bottom: 1rem; color: var(--text-primary);">백테스팅 거래 사이클 기록 (Trading Cycles Log)</h3>
+          <div class="table-wrapper">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>사이클</th>
+                  <th>시작일</th>
+                  <th>종료일</th>
+                  <th>최대 회차</th>
+                  <th>가상 투자금</th>
+                  <th>실현 수익금</th>
+                  <th>수익률</th>
+                  <th>상태</th>
+                </tr>
+              </thead>
+              <tbody id="btCycleLogBody"></tbody>
+            </table>
+          </div>
         </div>
       </div>
     </main>
@@ -804,6 +823,38 @@
 
         // 3. 차트 렌더링
         renderBtChart(symbol, data.daily_history);
+
+        // 4. 사이클 테이블 렌더링
+        const cycleBody = document.getElementById("btCycleLogBody");
+        cycleBody.innerHTML = "";
+
+        const reversedCycles = [...data.cycles].reverse(); // 최근 사이클이 위로
+        reversedCycles.forEach(c => {
+          const profit = c.profit || 0;
+          const profitRate = c.profit_rate || 0;
+          const status = c.status || 'ING';
+
+          let badgeClass = "badge-wait";
+          if (status === 'PROFIT') badgeClass = "badge-sell";
+          else if (status === 'LOSS') badgeClass = "badge-buy";
+
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+            <td>#${c.cycle_no}</td>
+            <td>${c.start_date}</td>
+            <td>${c.end_date || '-'}</td>
+            <td>${c.max_step}회차</td>
+            <td>$${c.purchase_amount.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
+            <td style="font-weight: 600; color: ${profit >= 0 ? 'var(--accent-blue)' : 'var(--accent-red)'}">
+              $${profit.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}
+            </td>
+            <td style="font-weight: 600; color: ${profitRate >= 0 ? 'var(--accent-blue)' : 'var(--accent-red)'}">
+              ${profitRate >= 0 ? '+' : ''}${profitRate.toFixed(2)}%
+            </td>
+            <td><span class="${badgeClass}">${status}</span></td>
+          `;
+          cycleBody.appendChild(tr);
+        });
 
       } catch (err) {
         console.error("백테스팅 데이터 연동 에러:", err);

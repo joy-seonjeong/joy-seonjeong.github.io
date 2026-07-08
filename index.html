@@ -472,9 +472,14 @@
               <h3 style="font-size: 0.95rem; font-weight: 700; margin-bottom: 1rem; color: var(--text-primary);">모의투자 진행 요약</h3>
               <ul class="stat-list">
                 <li class="stat-item"><span class="stat-label">진행 회차</span><span class="stat-val" id="statStep">0 / 10회차</span></li>
-                <li class="stat-item"><span class="stat-label">가상 보유량</span><span class="stat-val" id="statHoldings">0.00주</span></li>
-                <li class="stat-item"><span class="stat-label">보유 평단가</span><span class="stat-val" id="statAveragePrice">$0.00</span></li>
-                <li class="stat-item"><span class="stat-label">순현금 잔액</span><span class="stat-val" id="statNetCash">$0.00</span></li>
+                <li class="stat-item"><span class="stat-label">보유 수량 및 평단</span><span class="stat-val" id="statHoldingsInfo">0.00주 ($0.00)</span></li>
+                <li class="stat-item"><span class="stat-label">예수금 (보유 현금)</span><span class="stat-val" id="statNetCash">$0.00</span></li>
+                <li class="stat-item"><span class="stat-label">주식 평가금액</span><span class="stat-val" id="statStockValue">$0.00</span></li>
+                <li class="stat-item"><span class="stat-label">주식 평가손익</span><span class="stat-val" id="statEvalProfit">$0.00 (0.00%)</span></li>
+                <li class="stat-item" style="border-top: 1px dashed var(--border-color); padding-top: 0.5rem; margin-top: 0.5rem;">
+                  <span class="stat-label" style="font-weight: 700;">가상 총자산</span>
+                  <span class="stat-val" id="statTotalAssets" style="font-weight: 700; color: var(--text-primary);">$0.00</span>
+                </li>
               </ul>
               <div class="notice-box">
                 ■ <b>비용 반영 기준</b><br>
@@ -717,9 +722,28 @@
       document.getElementById("kpiRate").innerText = `${exRate.toFixed(2)} 원/$`;
 
       document.getElementById("statStep").innerText = `${status.step} / 10회차`;
-      document.getElementById("statHoldings").innerText = `${status.holdings.toFixed(2)}주`;
-      document.getElementById("statAveragePrice").innerText = `$${status.average_price.toFixed(2)} (약 ${Math.round(status.average_price * exRate).toLocaleString()}원)`;
+      document.getElementById("statHoldingsInfo").innerText = `${status.holdings.toFixed(2)}주 ($${status.average_price.toFixed(2)})`;
       document.getElementById("statNetCash").innerText = `$${status.net_cash.toFixed(2)} (약 ${Math.round(status.net_cash * exRate).toLocaleString()}원)`;
+
+      // 주식 평가금액 및 손익 계산
+      const currentPrice = latest.close;
+      const stockValue = status.holdings * currentPrice;
+      document.getElementById("statStockValue").innerText = `$${stockValue.toFixed(2)} (약 ${Math.round(stockValue * exRate).toLocaleString()}원)`;
+
+      const totalPurchase = status.holdings * status.average_price;
+      const evalProfit = stockValue - totalPurchase;
+      const evalProfitRate = totalPurchase > 0 ? (evalProfit / totalPurchase) * 100 : 0;
+      const profitSign = evalProfit >= 0 ? '+' : '';
+      const profitColor = evalProfit >= 0 ? '#1a8917' : '#d73a49';
+      document.getElementById("statEvalProfit").innerHTML = `
+        <span style="color: ${profitColor}; font-weight: 600;">
+          ${profitSign}$${evalProfit.toFixed(2)} (${profitSign}${evalProfitRate.toFixed(2)}%)
+        </span>
+      `;
+
+      // 가상 총자산 합산
+      const totalAssets = status.net_cash + stockValue;
+      document.getElementById("statTotalAssets").innerText = `$${totalAssets.toFixed(2)} (약 ${Math.round(totalAssets * exRate).toLocaleString()}원)`;
 
       const tbody = document.getElementById("mockLogBody");
       tbody.innerHTML = "";

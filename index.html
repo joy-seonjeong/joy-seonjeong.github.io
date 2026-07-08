@@ -3,211 +3,206 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Joy Portal 🚀</title>
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <title>Joy Kim</title>
+  <!-- Google Fonts: Inter & JetBrains Mono -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
   <!-- Chart.js & Marked.js CDNs -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <style>
     :root {
-      --bg-warm: #fdfbf7;
-      --bg-sub: #f7f4ed;
+      --bg-warm: #f5f5f3;      /* 차갑고 정돈된 스위스식 종이 질감 아이보리 */
       --bg-card: #ffffff;
-      --border-color: #e6e2da;
-      --border-color-hover: #d2cdc3;
-      --text-primary: #2f2f2f;
-      --text-secondary: #6e6a61;
-      --text-muted: #9c978e;
-      --accent-blue: #0366d6;
-      --accent-green: #28a745;
-      --accent-red: #d73a49;
-      --accent-purple: #6f42c1;
-      --font-family: 'Outfit', 'Noto Sans KR', sans-serif;
+      --border-color: #111111;  /* 직각 마감을 위한 단단한 블랙 보더 선 */
+      --text-primary: #111111;
+      --text-secondary: #555555;
+      --text-muted: #888888;
+      --accent-blue: #0f4c81;   /* 묵직한 톤다운 인디고 블루 */
+      --accent-green: #196f3d;  /* 다운그레이드된 포레스트 그린 */
+      --accent-red: #900c3f;    /* 차분한 딥 버건디 레드 */
+      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    * { box-sizing: border-box; margin: 0; padding: 0; border-radius: 0 !important; } /* 모든 둥근 모서리 강제 박멸 */
+
     body {
       background-color: var(--bg-warm);
       color: var(--text-primary);
-      font-family: var(--font-family);
-      line-height: 1.6;
-      padding: 2.5rem 1.5rem;
-      font-size: 14.5px; /* 오밀조밀하고 차분한 본문 크기 */
+      font-family: var(--font-sans);
+      line-height: 1.5;
+      padding: 3.5rem 2rem;
+      font-size: 13.5px; /* 컴팩트하고 오밀조밀한 프로 스케일 */
+      letter-spacing: -0.02em;
     }
 
     .container {
-      max-width: 1000px;
+      max-width: 1040px;
       margin: 0 auto;
     }
 
-    /* 헤더 및 메뉴 */
+    /* 헤더 및 메뉴 (Brutalist Grid) */
     header {
       display: flex;
       justify-content: space-between;
-      align-items: center;
-      border-bottom: 1.5px solid var(--border-color);
-      padding-bottom: 1.25rem;
-      margin-bottom: 2rem;
+      align-items: flex-end;
+      border-bottom: 2px solid var(--border-color);
+      padding-bottom: 1.5rem;
+      margin-bottom: 2.5rem;
     }
     @media (max-width: 768px) {
-      header { flex-direction: column; align-items: flex-start; gap: 1.25rem; }
+      header { flex-direction: column; align-items: flex-start; gap: 1.5rem; }
     }
 
     .logo {
-      font-size: 1.4rem;
-      font-weight: 700;
+      font-size: 1.25rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: -0.04em;
       color: var(--text-primary);
-      letter-spacing: -0.5px;
       cursor: pointer;
     }
 
     .main-nav {
       display: flex;
-      gap: 0.5rem;
-      background: var(--bg-sub);
+      gap: 0px;
       border: 1px solid var(--border-color);
-      padding: 0.3rem;
-      border-radius: 10px;
+      background-color: var(--bg-card);
     }
 
     .nav-btn {
       background: transparent;
       border: none;
+      border-right: 1px solid var(--border-color);
       color: var(--text-secondary);
-      padding: 0.5rem 1.1rem;
-      font-size: 0.9rem;
+      padding: 0.6rem 1.4rem;
+      font-size: 0.82rem;
       font-weight: 600;
-      border-radius: 7px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
       cursor: pointer;
-      transition: all 0.2s ease;
+      transition: all 0.15s ease;
     }
+    .nav-btn:last-child { border-right: none; }
     .nav-btn:hover {
+      background-color: var(--bg-warm);
       color: var(--text-primary);
-      background: rgba(255, 255, 255, 0.4);
     }
     .nav-btn.active {
-      background-color: var(--bg-card);
-      color: var(--text-primary);
-      box-shadow: 0 2px 5px rgba(0,0,0,0.06);
+      background-color: var(--text-primary);
+      color: #ffffff;
     }
 
-    /* 카드 스타일 (아이보리 라이트 테마) */
+    /* 카드 스타일 (직각 & 하드 섀도우) */
     .card {
       background-color: var(--bg-card);
       border: 1px solid var(--border-color);
-      border-radius: 10px;
-      padding: 1.75rem;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.02);
-      margin-bottom: 1.5rem;
+      padding: 2rem;
+      box-shadow: 3px 3px 0px var(--border-color); /* 시크한 블랙 플랫 하드 섀도우 */
+      margin-bottom: 2rem;
     }
 
     .card-title {
-      font-size: 1.15rem;
-      font-weight: 700;
-      margin-bottom: 1.25rem;
+      font-size: 1.05rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: -0.03em;
+      margin-bottom: 1.5rem;
       border-bottom: 1px solid var(--border-color);
       padding-bottom: 0.5rem;
       color: var(--text-primary);
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
     }
 
-    /* 탭 내 세부 탭 (Asset 하위 전용) */
+    /* 세부 중첩 탭 (Asset 하위 전용 - 직각 그리드 형태) */
     .sub-tabs-bar {
       display: flex;
-      gap: 0.75rem;
+      border: 1px solid var(--border-color);
+      background-color: var(--bg-warm);
       margin-bottom: 1.5rem;
-      border-bottom: 1px solid var(--border-color);
-      padding-bottom: 0.75rem;
+      width: fit-content;
     }
 
     .sub-tab-btn {
       background: transparent;
       border: none;
+      border-right: 1px solid var(--border-color);
       color: var(--text-secondary);
-      font-weight: 600;
-      font-size: 0.92rem;
-      cursor: pointer;
-      padding: 0.25rem 0;
-      position: relative;
-      transition: color 0.2s ease;
-    }
-    .sub-tab-btn:hover { color: var(--text-primary); }
-    .sub-tab-btn.active {
-      color: var(--accent-blue);
-    }
-    .sub-tab-btn.active::after {
-      content: '';
-      position: absolute;
-      bottom: -0.75rem;
-      left: 0;
-      width: 100%;
-      height: 2px;
-      background-color: var(--accent-blue);
-    }
-
-    /* 소형 종목 스위칭 탭 */
-    .symbol-tabs {
-      display: flex;
-      gap: 0.4rem;
-      margin-bottom: 1.25rem;
-    }
-    .symbol-btn {
-      background-color: var(--bg-sub);
-      border: 1px solid var(--border-color);
-      color: var(--text-secondary);
-      padding: 0.4rem 0.9rem;
-      font-size: 0.8rem;
       font-weight: 700;
-      border-radius: 5px;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
       cursor: pointer;
+      padding: 0.5rem 1.25rem;
       transition: all 0.15s ease;
     }
-    .symbol-btn:hover { border-color: var(--border-color-hover); color: var(--text-primary); }
+    .sub-tab-btn:last-child { border-right: none; }
+    .sub-tab-btn:hover { color: var(--text-primary); background-color: rgba(0,0,0,0.03); }
+    .sub-tab-btn.active {
+      background-color: var(--text-primary);
+      color: #ffffff;
+    }
+
+    /* 종목 전환 탭 (더욱 컴팩트한 모노 격자) */
+    .symbol-tabs {
+      display: flex;
+      margin-bottom: 1.5rem;
+      border: 1px solid var(--border-color);
+      width: fit-content;
+    }
+    .symbol-btn {
+      background-color: var(--bg-card);
+      border: none;
+      border-right: 1px solid var(--border-color);
+      color: var(--text-secondary);
+      padding: 0.45rem 1rem;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .symbol-btn:last-child { border-right: none; }
+    .symbol-btn:hover { background-color: var(--bg-warm); }
     .symbol-btn.active {
       background-color: var(--accent-blue);
       color: #ffffff;
-      border-color: var(--accent-blue);
     }
 
-    /* KPI Grid */
+    /* KPI Grid (플랫 직각 카드화) */
     .kpi-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
-      gap: 1rem;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.25rem;
       margin-bottom: 1.5rem;
     }
     .kpi-card {
       background-color: var(--bg-card);
       border: 1px solid var(--border-color);
-      border-radius: 8px;
-      padding: 1.1rem;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+      padding: 1.25rem;
+      box-shadow: 2px 2px 0px var(--border-color);
     }
     .kpi-title {
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       color: var(--text-muted);
       text-transform: uppercase;
-      margin-bottom: 0.25rem;
-      font-weight: 600;
-      letter-spacing: 0.5px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.35rem;
     }
     .kpi-value {
-      font-size: 1.4rem;
+      font-family: var(--font-mono); /* 데이터를 프로페셔널하게 */
+      font-size: 1.35rem;
       font-weight: 700;
       color: var(--text-primary);
     }
     .kpi-value.positive { color: var(--accent-green); }
     .kpi-value.negative { color: var(--accent-red); }
     .kpi-sub {
-      font-size: 0.82rem;
+      font-size: 0.8rem;
       color: var(--text-secondary);
-      margin-top: 0.2rem;
+      margin-top: 0.25rem;
     }
 
-    /* Layouts */
+    /* Split Layout */
     .split-layout {
       display: grid;
       grid-template-columns: 2.2fr 1fr;
@@ -228,172 +223,180 @@
     .stat-item {
       display: flex;
       justify-content: space-between;
-      padding: 0.7rem 0;
-      border-bottom: 1px solid var(--border-color);
-      font-size: 0.92rem;
+      padding: 0.75rem 0;
+      border-bottom: 1px dashed var(--border-color);
+      font-size: 0.88rem;
     }
     .stat-item:last-child { border-bottom: none; }
     .stat-label { color: var(--text-secondary); }
-    .stat-val { font-weight: 600; }
+    .stat-val { font-family: var(--font-mono); font-weight: 600; }
 
     .notice-box {
-      background-color: var(--bg-sub);
-      border-left: 3px solid var(--accent-blue);
-      border-radius: 4px;
-      padding: 0.75rem;
+      background-color: var(--bg-warm);
+      border-left: 2px solid var(--border-color);
+      padding: 0.85rem;
       margin-top: 1rem;
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       color: var(--text-secondary);
       line-height: 1.5;
     }
 
-    /* Tables */
+    /* Tables (직선적 미니멀 테이블) */
     .table-wrapper { overflow-x: auto; }
     .table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 0.88rem;
-      text-align: left;
+      font-size: 0.85rem;
     }
     .table th, .table td {
-      padding: 0.7rem 0.9rem;
+      padding: 0.75rem 0.85rem;
       border-bottom: 1px solid var(--border-color);
     }
     .table th {
-      background-color: var(--bg-sub);
-      color: var(--text-secondary);
-      font-weight: 600;
-      font-size: 0.78rem;
+      background-color: var(--bg-warm);
+      color: var(--text-primary);
+      font-weight: 700;
+      font-size: 0.75rem;
       text-transform: uppercase;
+      letter-spacing: 0.05em;
     }
-    .table tr:hover { background-color: var(--bg-warm); }
+    .table td {
+      font-family: var(--font-mono); /* 수치는 모두 정합적인 고정폭으로 */
+    }
+    .table tr:hover { background-color: rgba(0,0,0,0.01); }
 
     .badge-buy {
-      background-color: rgba(215, 58, 73, 0.08);
+      border: 1px solid var(--accent-red);
       color: var(--accent-red);
-      padding: 0.15rem 0.4rem;
-      border-radius: 4px;
-      font-size: 0.72rem;
+      padding: 0.1rem 0.35rem;
+      font-family: var(--font-sans);
+      font-size: 0.7rem;
       font-weight: 700;
+      text-transform: uppercase;
     }
     .badge-sell {
-      background-color: rgba(40, 167, 69, 0.08);
+      border: 1px solid var(--accent-green);
       color: var(--accent-green);
-      padding: 0.15rem 0.4rem;
-      border-radius: 4px;
-      font-size: 0.72rem;
+      padding: 0.1rem 0.35rem;
+      font-family: var(--font-sans);
+      font-size: 0.7rem;
       font-weight: 700;
+      text-transform: uppercase;
     }
     .badge-wait {
-      background-color: rgba(110, 106, 97, 0.08);
+      border: 1px solid var(--text-muted);
       color: var(--text-secondary);
-      padding: 0.15rem 0.4rem;
-      border-radius: 4px;
-      font-size: 0.72rem;
+      padding: 0.1rem 0.35rem;
+      font-family: var(--font-sans);
+      font-size: 0.7rem;
       font-weight: 700;
+      text-transform: uppercase;
     }
 
-    /* 👤 About 탭 내 타임라인 스타일 */
+    /* 👤 About 타임라인 */
     .timeline {
       position: relative;
-      padding-left: 1.5rem;
-      border-left: 2px solid var(--border-color);
-      margin-top: 1rem;
+      padding-left: 1.25rem;
+      border-left: 1.5px solid var(--border-color);
+      margin-top: 1.25rem;
     }
     .timeline-item {
       position: relative;
-      margin-bottom: 1.5rem;
+      margin-bottom: 1.75rem;
     }
     .timeline-item::before {
       content: '';
       position: absolute;
-      left: calc(-1.5rem - 6px);
+      left: calc(-1.25rem - 4.5px);
       top: 5px;
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background-color: var(--accent-blue);
-      border: 2px solid var(--bg-card);
+      width: 8px;
+      height: 8px;
+      background-color: var(--text-primary);
     }
     .timeline-date {
-      font-size: 0.8rem;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
       color: var(--text-muted);
       font-weight: 600;
     }
     .timeline-title {
-      font-size: 0.95rem;
-      font-weight: 700;
+      font-size: 0.92rem;
+      font-weight: 800;
       color: var(--text-primary);
-      margin-top: 0.1rem;
+      margin-top: 0.15rem;
     }
     .timeline-desc {
-      font-size: 0.88rem;
+      font-size: 0.85rem;
       color: var(--text-secondary);
-      margin-top: 0.25rem;
+      margin-top: 0.35rem;
     }
 
-    /* 📖 Story 탭 블로그 스타일 */
+    /* 📖 Story 블로그 */
     .story-list {
       list-style: none;
-      padding: 0;
     }
     .story-item {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 1rem 0;
-      border-bottom: 1px solid var(--border-color);
+      padding: 1.1rem 0;
+      border-bottom: 1px dashed var(--border-color);
       cursor: pointer;
-      transition: all 0.2s ease;
     }
-    .story-item:hover {
-      padding-left: 0.5rem;
+    .story-item:hover .story-title {
+      color: var(--accent-blue);
+      text-decoration: underline;
     }
     .story-item:last-child { border-bottom: none; }
     .story-title {
-      font-weight: 600;
+      font-weight: 700;
       color: var(--text-primary);
-      font-size: 0.95rem;
+      font-size: 0.92rem;
+      transition: color 0.15s ease;
     }
     .story-date {
-      font-size: 0.82rem;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
       color: var(--text-muted);
     }
     .story-detail-btn {
-      background-color: var(--accent-blue);
+      background-color: var(--text-primary);
       color: #ffffff;
       border: none;
-      padding: 0.4rem 0.9rem;
-      font-size: 0.8rem;
-      font-weight: 600;
-      border-radius: 5px;
+      padding: 0.4rem 0.85rem;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
       cursor: pointer;
     }
 
-    /* 마크다운 본문 파싱 컨테이너 */
+    /* 마크다운 파싱 컨테이너 */
     .markdown-body {
       color: var(--text-primary);
-      font-size: 0.92rem;
+      font-size: 0.88rem;
+      line-height: 1.6;
     }
     .markdown-body h1, .markdown-body h2, .markdown-body h3 {
       color: var(--text-primary);
-      margin-top: 1.25rem;
-      margin-bottom: 0.75rem;
-      font-weight: 700;
+      margin-top: 1.5rem;
+      margin-bottom: 0.85rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: -0.02em;
     }
-    .markdown-body h1 { font-size: 1.4rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.4rem; }
-    .markdown-body h2 { font-size: 1.15rem; }
-    .markdown-body h3 { font-size: 1rem; }
+    .markdown-body h1 { font-size: 1.25rem; border-bottom: 1.5px solid var(--border-color); padding-bottom: 0.4rem; }
+    .markdown-body h2 { font-size: 1.05rem; }
+    .markdown-body h3 { font-size: 0.95rem; }
     .markdown-body p { margin-bottom: 1rem; }
-    .markdown-body ul { margin-left: 1.25rem; margin-bottom: 1rem; }
-    .markdown-body li { margin-bottom: 0.35rem; }
+    .markdown-body ul { margin-left: 1.2rem; margin-bottom: 1rem; }
+    .markdown-body li { margin-bottom: 0.4rem; }
   </style>
 </head>
 <body>
   <div class="container">
     <!-- 헤더 -->
     <header>
-      <div class="logo" onclick="switchTab('home')">Joy Portal 🚀</div>
+      <div class="logo" onclick="switchTab('home')">Joy Kim</div>
       <nav class="main-nav">
         <button class="nav-btn active" id="tabBtn-home" onclick="switchTab('home')">Home</button>
         <button class="nav-btn" id="tabBtn-about" onclick="switchTab('about')">About</button>
@@ -405,19 +408,19 @@
     <!-- 탭 1: Home -->
     <main id="view-home" class="view-panel">
       <div class="card">
-        <h2 class="card-title">Welcome to Joy Portal</h2>
-        <div style="max-width: 750px;">
-          <p style="margin-bottom: 1rem; font-size: 0.95rem; color: var(--text-secondary);">
-            안녕하세요! 데이터로 먹고사는 이야기를 기록하고 가꿔가는 김선정(Joy Kim)의 개인 통합 금융 & 스토리 허브 포털입니다.
+        <h2 class="card-title">Overview</h2>
+        <div style="max-width: 780px;">
+          <p style="margin-bottom: 1.2rem; font-size: 0.92rem; color: var(--text-secondary);">
+            데이터 아키텍처와 개인 금융 포트폴리오의 안전성에 관해 연구하는 김선정(Joy Kim)의 독립 포털 공간입니다.
           </p>
-          <p style="margin-bottom: 1.5rem; font-size: 0.95rem; color: var(--text-secondary);">
-            이곳은 매일 아침 구동되는 해외 주식 **무한매수법(Infinite Buying Strategy)** 자동화 봇의 실시간 매매 성과를 조용하고 프라이빗하게 관찰하며, 과거 데이터를 바탕으로 한 성과를 대조 분석하고, 다양한 생각들을 공유하는 개인 도메인 공간입니다.
+          <p style="margin-bottom: 1.75rem; font-size: 0.92rem; color: var(--text-secondary);">
+            이곳은 매일 아침 미국 주식시장 마감 직후 동작하는 TQQQ/SOXL 10분할 무한매수 자동매매 모의투자 봇의 실시간 매매 성과를 관찰하고, 과거 5개년(2021~2026) 백테스팅 원본 시뮬레이션 성과를 시각적으로 정밀 분석하기 위해 구축되었습니다.
           </p>
-          <div style="background-color: var(--bg-sub); border: 1px solid var(--border-color); border-radius: 8px; padding: 1.1rem; line-height: 1.5;">
-            💡 <b>포털 주요 탐색 안내:</b><br>
-            * <b>About 탭</b>: 컬리(Kurly)에서의 주요 이력 타임라인 확인<br>
-            * <b>Asset 탭</b>: TQQQ 및 SOXL 모의투자 상태와 5개년 성과 분석 보고서 확인<br>
-            * <b>Story 탭</b>: 마크다운 파일로 편하게 발행되는 일상의 스토리 블로그 구독
+          <div class="notice-box">
+            ■ <b>PORTFOLIO INDEX NAVIGATION</b><br>
+            * <b>ABOUT</b> — 컬리(Kurly)에서의 업무 이력 및 기술 스택 개요.<br>
+            * <b>ASSET</b> — 미국 레버리지 모의투자 실시간 결과 및 5개년 백테스트 대조 보고서.<br>
+            * <b>STORY</b> — 메모장과 마크다운으로 연동되는 가벼운 기술/일상 블로그 포스트.
           </div>
         </div>
       </div>
@@ -426,22 +429,21 @@
     <!-- 탭 2: About -->
     <main id="view-about" class="view-panel" style="display: none;">
       <div class="card">
-        <h2 class="card-title">About Me</h2>
-        <p style="margin-bottom: 1.5rem; color: var(--text-secondary); font-size: 0.95rem;">
-          데이터와 인프라의 가치를 설계하고, 윤리적이고 가벼운 웹 생태계를 가꿔가는 김선정입니다.
+        <h2 class="card-title">Professional Experience</h2>
+        <p style="margin-bottom: 1.5rem; color: var(--text-secondary); font-size: 0.92rem;">
+          대용량 데이터 처리 파이프라인의 설계와 인프라의 가치 구현을 주도해 왔습니다.
         </p>
 
-        <h3 style="font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem; color: var(--text-primary);">주요 약력 및 경력</h3>
         <div class="timeline">
           <div class="timeline-item">
             <div class="timeline-date">2017 - 2022</div>
             <div class="timeline-title">Kurly (컬리)</div>
-            <div class="timeline-desc">데이터 엔지니어링 및 인프라 구축 파트에서 겁나 열심히 일하고 성장에 기여했습니다.</div>
+            <div class="timeline-desc">데이터 엔지니어링 및 클라우드 인프라 파트에서 실시간 로그 수집 아키텍처 구축 및 비즈니스 성장에 따른 인프라 최적화를 기획 및 관리했습니다.</div>
           </div>
           <div class="timeline-item">
-            <div class="timeline-date">2022 - Present</div>
-            <div class="timeline-title">데이터 분석 및 개인 자산 포트폴리오 연구</div>
-            <div class="timeline-desc">주식 자동매매 봇 설계, 백테스팅 엔진 제작 및 데이터 시각화 허브 관리.</div>
+            <div class="timeline-date">2022 - PRESENT</div>
+            <div class="timeline-title">Quantitative Portfolio Engineering</div>
+            <div class="timeline-desc">토스 Open API 기반 자동 주문 연동, 예외 복구 및 yfinance 주가 모델링을 이용한 백테스팅 프레임워크 연구.</div>
           </div>
         </div>
       </div>
@@ -449,7 +451,7 @@
 
     <!-- 탭 3: Asset (중첩 세부 탭 구조) -->
     <main id="view-asset" class="view-panel" style="display: none;">
-      <div class="card" style="padding-bottom: 1rem;">
+      <div class="card" style="padding-bottom: 1.5rem;">
         <!-- 세부 중첩 탭 바 -->
         <div class="sub-tabs-bar">
           <button class="sub-tab-btn active" id="subTabBtn-mock" onclick="switchAssetSubTab('mock')">실시간 모의투자 현황</button>
@@ -484,14 +486,14 @@
           </div>
 
           <div class="split-layout">
-            <div class="kpi-card" style="padding: 1.25rem;">
-              <div class="dobby-panel-title" style="font-size: 0.95rem; font-weight: 700; margin-bottom: 0.75rem;">가상 자산 추이 곡선</div>
+            <div class="kpi-card" style="box-shadow: none;">
+              <div class="card-title" style="font-size: 0.88rem; margin-bottom: 0.75rem; border-bottom: none; padding-bottom: 0;">가상 자산 추이 곡선</div>
               <div class="chart-container">
                 <canvas id="mockChart"></canvas>
               </div>
             </div>
-            <div class="kpi-card" style="padding: 1.25rem;">
-              <div class="dobby-panel-title" style="font-size: 0.95rem; font-weight: 700; margin-bottom: 0.75rem;">모의투자 진행 요약</div>
+            <div class="kpi-card" style="box-shadow: none;">
+              <div class="card-title" style="font-size: 0.88rem; margin-bottom: 0.75rem; border-bottom: none; padding-bottom: 0;">모의투자 진행 요약</div>
               <ul class="stat-list">
                 <li class="stat-item"><span class="stat-label">진행 회차</span><span class="stat-val" id="statStep">0 / 10회차</span></li>
                 <li class="stat-item"><span class="stat-label">가상 보유량</span><span class="stat-val" id="statHoldings">0.00주</span></li>
@@ -499,15 +501,15 @@
                 <li class="stat-item"><span class="stat-label">순현금 잔액</span><span class="stat-val" id="statNetCash">$0.00</span></li>
               </ul>
               <div class="notice-box">
-                💡 <b>수수료 반영 기준:</b><br>
+                ■ <b>비용 반영 기준</b><br>
                 * 매매 수수료: 0.07% 차감<br>
                 * 매도 제세금: 0.00278% 차감<br>
-                * AI 구독료: 매월 $20.00 차감
+                * AI 구독 요금: 매월 $20.00 고정 차감
               </div>
             </div>
           </div>
 
-          <h3 style="font-size: 0.95rem; font-weight: 700; margin-top: 1.5rem; margin-bottom: 0.75rem; color: var(--text-primary);">가상 거래 일지 (Mock Trading Log)</h3>
+          <h3 style="font-size: 0.88rem; font-weight: 800; text-transform: uppercase; margin-top: 1.5rem; margin-bottom: 0.75rem; color: var(--text-primary);">가상 거래 일지 (Mock Trading Log)</h3>
           <div class="table-wrapper">
             <table class="table">
               <thead>
@@ -549,14 +551,14 @@
           </div>
 
           <div class="split-layout">
-            <div class="kpi-card" style="padding: 1.25rem;">
-              <div class="dobby-panel-title" style="font-size: 0.95rem; font-weight: 700; margin-bottom: 0.75rem;">5개년 누적 자산 성장 곡선</div>
+            <div class="kpi-card" style="box-shadow: none;">
+              <div class="card-title" style="font-size: 0.88rem; margin-bottom: 0.75rem; border-bottom: none; padding-bottom: 0;">5개년 누적 자산 성장 곡선</div>
               <div class="chart-container">
                 <canvas id="btChart"></canvas>
               </div>
             </div>
-            <div class="kpi-card" style="padding: 1.25rem;">
-              <div class="dobby-panel-title" style="font-size: 0.95rem; font-weight: 700; margin-bottom: 0.75rem;">시뮬레이션 통계 요약</div>
+            <div class="kpi-card" style="box-shadow: none;">
+              <div class="card-title" style="font-size: 0.88rem; margin-bottom: 0.75rem; border-bottom: none; padding-bottom: 0;">시뮬레이션 통계 요약</div>
               <ul class="stat-list">
                 <li class="stat-item"><span class="stat-label">테스트 설정 원금</span><span class="stat-val" id="btCapital">$10,000</span></li>
                 <li class="stat-item"><span class="stat-label">최종 평가 자산</span><span class="stat-val" id="btFinalAsset">$24,850</span></li>
@@ -564,7 +566,7 @@
                 <li class="stat-item"><span class="stat-label">평균 보유 기간</span><span class="stat-val" id="btDuration">0일</span></li>
               </ul>
               <div class="notice-box">
-                📊 <b>시뮬레이션 정보:</b><br>
+                ■ <b>시뮬레이션 정보</b><br>
                 * 매매 대상: 미국 3배 레버리지 ETF<br>
                 * 테스트 기간: 2021~2026 (최근 5년 일봉)<br>
                 * 수수료: 왕복 0.15% 기준 계산 반영
@@ -579,8 +581,8 @@
     <main id="view-story" class="view-panel" style="display: none;">
       <div class="card" id="story-list-view">
         <h2 class="card-title">Story</h2>
-        <p style="margin-bottom: 1.25rem; color: var(--text-secondary); font-size: 0.92rem;">
-          가볍고 예쁘게 기록해 나가는 데이터와 배움의 스토리 목록입니다.
+        <p style="margin-bottom: 1.25rem; color: var(--text-secondary); font-size: 0.9rem;">
+          기록해 나가는 기술과 배움에 관한 생각의 단편들입니다.
         </p>
         <ul class="story-list" id="storyListBody"></ul>
       </div>
@@ -594,17 +596,14 @@
   </div>
 
   <script>
-    // 📡 데이터 긁어올 대상 호스트 (자산 봇 저장소)
     const DATA_HOST = "https://joy-seonjeong.github.io/dobby-project";
     
-    // 글로벌 상태
     let statusData = null;
     let mockHistoryMap = {};
     let activeAssetSubTab = 'mock';
     let currentMockChart = null;
     let currentBtChart = null;
 
-    // 📈 5개년 정적 백테스트 종합 데이터셋 (TQQQ, SOXL, UPRO 전체 복구 완료!)
     const backtestData = {
       "TQQQ": {
         summary: { totalReturn: 148.5, cagr: 19.8, mdd: -28.4, winRate: 88.5, capital: 10000, finalAsset: 24850, cycles: 42, duration: 18.5 },
@@ -632,7 +631,6 @@
       }
     };
 
-    // 1. 대메뉴 탭 스위칭 (Home, About, Asset, Story)
     function switchTab(tabId) {
       document.querySelectorAll(".nav-btn").forEach(btn => btn.classList.remove("active"));
       document.querySelectorAll(".view-panel").forEach(view => view.style.display = "none");
@@ -641,7 +639,6 @@
       document.getElementById(`view-${tabId}`).style.display = "block";
 
       if (tabId === 'asset') {
-        // Asset 진입 시 차트 재조정
         setTimeout(() => {
           if (activeAssetSubTab === 'mock') {
             const activeBtn = document.querySelector("#mockSymbolTabs .symbol-btn.active");
@@ -656,7 +653,6 @@
       }
     }
 
-    // 2. Asset 하부 세부 탭 스위칭 (실시간 모의투자 vs 백테스팅)
     function switchAssetSubTab(subTabId) {
       activeAssetSubTab = subTabId;
       document.querySelectorAll(".sub-tab-btn").forEach(btn => btn.classList.remove("active"));
@@ -677,14 +673,12 @@
       }
     }
 
-    // 3. 모의투자 실시간 데이터 Fetch 로딩 및 세팅
     async function loadMockData() {
       try {
         const res = await fetch(`${DATA_HOST}/trading/data/infinite_buying_status.json`);
         if (!res.ok) throw new Error("Status JSON 로드 실패");
         statusData = await res.json();
 
-        // 모의투자 종목 탭 동적 생성
         const mockTabs = document.getElementById("mockSymbolTabs");
         mockTabs.innerHTML = "";
         const symbols = Object.keys(statusData);
@@ -692,13 +686,11 @@
         for (let i = 0; i < symbols.length; i++) {
           const symbol = symbols[i];
           
-          // 각 종목 가상 역사 파일 fetch
           const histRes = await fetch(`${DATA_HOST}/trading/data/${symbol}_10_virtual_history.json`);
           if (histRes.ok) {
             mockHistoryMap[symbol] = await histRes.json();
           }
 
-          // 종목 스위칭 탭 버튼
           const btn = document.createElement("button");
           btn.className = `symbol-btn ${i === 0 ? "active" : ""}`;
           btn.innerText = symbol;
@@ -706,7 +698,6 @@
           mockTabs.appendChild(btn);
         }
 
-        // 백테스트 종목 스위칭 탭 버튼 동적 생성
         const btTabs = document.getElementById("backtestSymbolTabs");
         btTabs.innerHTML = "";
         const btSymbols = Object.keys(backtestData);
@@ -726,7 +717,6 @@
       }
     }
 
-    // 3-1. 모의투자 종목 스위칭
     function switchMockSymbol(symbol, targetBtn = null) {
       if (targetBtn) {
         document.querySelectorAll("#mockSymbolTabs .symbol-btn").forEach(btn => btn.classList.remove("active"));
@@ -740,7 +730,6 @@
       const latest = history[history.length - 1];
       const exRate = latest.exchange_rate;
 
-      // KPI 수치
       document.getElementById("kpiCapital").innerText = `$${status.capital.toFixed(2)}`;
       document.getElementById("kpiCapitalKrw").innerText = `≈ ${Math.round(status.capital * exRate).toLocaleString()} 원`;
 
@@ -757,13 +746,11 @@
       document.getElementById("kpiClose").innerText = `$${latest.close.toFixed(2)}`;
       document.getElementById("kpiRate").innerText = `${exRate.toFixed(2)} 원/$`;
 
-      // 통계 요약
       document.getElementById("statStep").innerText = `${status.step} / 10회차`;
       document.getElementById("statHoldings").innerText = `${status.holdings.toFixed(2)}주`;
       document.getElementById("statAveragePrice").innerText = `$${status.average_price.toFixed(2)} (약 ${Math.round(status.average_price * exRate).toLocaleString()}원)`;
       document.getElementById("statNetCash").innerText = `$${status.net_cash.toFixed(2)} (약 ${Math.round(status.net_cash * exRate).toLocaleString()}원)`;
 
-      // 일지 테이블
       const tbody = document.getElementById("mockLogBody");
       tbody.innerHTML = "";
 
@@ -793,7 +780,6 @@
       renderMockChart(symbol, history);
     }
 
-    // 3-2. 모의투자 차트 렌더링
     function renderMockChart(symbol, history) {
       const dates = history.map(h => h.date);
       const rawAssets = history.map(h => h.total_assets);
@@ -808,24 +794,33 @@
         data: {
           labels: dates,
           datasets: [
-            { label: '세전 가상자산 ($)', data: rawAssets, borderColor: '#0366d6', borderWidth: 2, fill: false, yAxisID: 'y-assets', pointRadius: 3 },
-            { label: '순자산 ($)', data: netAssets, borderColor: '#28a745', borderWidth: 2, fill: false, yAxisID: 'y-assets', pointRadius: 3 },
-            { label: `${symbol} 주가 ($)`, data: prices, borderColor: '#e6e2da', borderWidth: 1.5, borderDash: [4, 4], fill: false, yAxisID: 'y-price', pointRadius: 0 }
+            { label: '세전 가상자산 ($)', data: rawAssets, borderColor: '#0f4c81', borderWidth: 2, fill: false, yAxisID: 'y-assets', pointRadius: 2 },
+            { label: '순자산 ($)', data: netAssets, borderColor: '#196f3d', borderWidth: 2, fill: false, yAxisID: 'y-assets', pointRadius: 2 },
+            { label: `${symbol} 주가 ($)`, data: prices, borderColor: '#d2cdc3', borderWidth: 1, borderDash: [2, 2], fill: false, yAxisID: 'y-price', pointRadius: 0 }
           ]
         },
         options: {
           responsive: true,
           maintainAspectRatio: false,
           interaction: { mode: 'index', intersect: false },
+          plugins: {
+            legend: {
+              labels: {
+                font: {
+                  family: 'Inter'
+                }
+              }
+            }
+          },
           scales: {
-            'y-assets': { type: 'linear', position: 'left', title: { display: true, text: '자산 가치 ($)', color: '#6e6a61' } },
-            'y-price': { type: 'linear', position: 'right', grid: { drawOnChartArea: false }, title: { display: true, text: '주가 ($)', color: '#6e6a61' } }
+            'y-assets': { type: 'linear', position: 'left', ticks: { font: { family: 'JetBrains Mono', size: 10 } } },
+            'y-price': { type: 'linear', position: 'right', grid: { drawOnChartArea: false }, ticks: { font: { family: 'JetBrains Mono', size: 10 } } },
+            x: { ticks: { font: { family: 'JetBrains Mono', size: 10 } } }
           }
         }
       });
     }
 
-    // 4. 백테스트 종목 스위칭 및 차트 렌더링
     function switchBtSymbol(symbol, targetBtn = null) {
       if (targetBtn) {
         document.querySelectorAll("#backtestSymbolTabs .symbol-btn").forEach(btn => btn.classList.remove("active"));
@@ -835,13 +830,11 @@
       const data = backtestData[symbol];
       const s = data.summary;
 
-      // KPI 수치 세팅
       document.getElementById("btReturn").innerText = `+${s.totalReturn.toFixed(1)}%`;
       document.getElementById("btCagr").innerText = `+${s.cagr.toFixed(1)}%`;
       document.getElementById("btMdd").innerText = `${s.mdd.toFixed(1)}%`;
       document.getElementById("btWinRate").innerText = `${s.winRate.toFixed(1)}%`;
 
-      // 통계 요약
       document.getElementById("btCapital").innerText = `$${s.capital.toLocaleString()}`;
       document.getElementById("btFinalAsset").innerText = `$${s.finalAsset.toLocaleString()}`;
       document.getElementById("btCycles").innerText = `${s.cycles}회`;
@@ -850,7 +843,6 @@
       renderBtChart(symbol, data.chart);
     }
 
-    // 4-1. 백테스트 차트 그리기
     function renderBtChart(symbol, chart) {
       if (currentBtChart) currentBtChart.destroy();
 
@@ -860,28 +852,37 @@
         data: {
           labels: chart.labels,
           datasets: [
-            { label: '무한매수법 자산 성장 ($)', data: chart.assets, borderColor: '#28a745', borderWidth: 2.5, fill: false, pointRadius: 4 },
-            { label: `${symbol} 단순보유 수익 ($)`, data: chart.buyAndHold, borderColor: '#d73a49', borderWidth: 1.5, borderDash: [3, 3], fill: false, pointRadius: 2 }
+            { label: '무한매수법 자산 성장 ($)', data: chart.assets, borderColor: '#196f3d', borderWidth: 2.2, fill: false, pointRadius: 3 },
+            { label: `${symbol} 단순보유 수익 ($)`, data: chart.buyAndHold, borderColor: '#900c3f', borderWidth: 1.2, borderDash: [2, 2], fill: false, pointRadius: 1 }
           ]
         },
         options: {
           responsive: true,
           maintainAspectRatio: false,
           interaction: { mode: 'index', intersect: false },
+          plugins: {
+            legend: {
+              labels: {
+                font: {
+                  family: 'Inter'
+                }
+              }
+            }
+          },
           scales: {
-            y: { type: 'linear', title: { display: true, text: '누적 평가 자산 ($)', color: '#6e6a61' } }
+            y: { type: 'linear', ticks: { font: { family: 'JetBrains Mono', size: 10 } } },
+            x: { ticks: { font: { family: 'JetBrains Mono', size: 10 } } }
           }
         }
       });
     }
 
-    // 5. 📖 Story (마크다운 서버리스 블로그) 연동 기능
     let storyList = [];
 
     async function loadStoryList() {
       try {
         const res = await fetch('./story/story_list.json');
-        if (!res.ok) throw new Error("스토리 목록을 읽을 수 없음");
+        if (!res.ok) throw new Error("스토리 목록 로드 실패");
         storyList = await res.json();
 
         const listBody = document.getElementById("storyListBody");
@@ -894,9 +895,9 @@
           li.innerHTML = `
             <div>
               <span class="story-title">${story.title}</span>
-              <div style="font-size:0.8rem; color: var(--text-muted); margin-top: 0.15rem;">작성일: ${story.date}</div>
+              <div style="font-family: var(--font-mono); font-size:0.75rem; color: var(--text-muted); margin-top: 0.2rem;">${story.date}</div>
             </div>
-            <button class="story-detail-btn">읽기</button>
+            <button class="story-detail-btn">Open</button>
           `;
           listBody.appendChild(li);
         });
@@ -905,14 +906,12 @@
       }
     }
 
-    // 5-1. 블로그 글 본문 파싱 및 렌더링
     async function readStoryDetail(story) {
       try {
         const res = await fetch(`./${story.file}`);
-        if (!res.ok) throw new Error("스토리 파일 본문 로드 실패");
+        if (!res.ok) throw new Error("스토리 본문 로드 실패");
         const mdText = await res.text();
 
-        // marked CDN을 이용해 마크다운을 정갈한 HTML로 변환 이식
         const htmlContent = marked.parse(mdText);
 
         document.getElementById("storyMarkdownContent").innerHTML = htmlContent;
@@ -928,7 +927,6 @@
       document.getElementById("story-detail-view").style.display = "none";
     }
 
-    // 초기 구동
     window.addEventListener("DOMContentLoaded", () => {
       loadMockData();
     });

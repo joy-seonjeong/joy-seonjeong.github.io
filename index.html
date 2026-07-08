@@ -580,32 +580,7 @@
     let currentMockChart = null;
     let currentBtChart = null;
 
-    const backtestData = {
-      "TQQQ": {
-        summary: { totalReturn: 148.5, cagr: 19.8, mdd: -28.4, winRate: 88.5, capital: 10000, finalAsset: 24850, cycles: 42, duration: 18.5 },
-        chart: {
-          labels: ["2021", "2022", "2023", "2024", "2025", "2026"],
-          assets: [10000, 12100, 11500, 16800, 20400, 24850],
-          buyAndHold: [10000, 13500, 6800, 11200, 18500, 21200]
-        }
-      },
-      "SOXL": {
-        summary: { totalReturn: 212.4, cagr: 25.6, mdd: -34.8, winRate: 85.2, capital: 10000, finalAsset: 31240, cycles: 38, duration: 21.2 },
-        chart: {
-          labels: ["2021", "2022", "2023", "2024", "2025", "2026"],
-          assets: [10000, 13400, 12100, 19800, 24600, 31240],
-          buyAndHold: [10000, 14200, 5100, 9800, 21500, 24500]
-        }
-      },
-      "UPRO": {
-        summary: { totalReturn: 88.2, cagr: 13.5, mdd: -19.4, winRate: 91.2, capital: 10000, finalAsset: 18820, cycles: 45, duration: 15.8 },
-        chart: {
-          labels: ["2021", "2022", "2023", "2024", "2025", "2026"],
-          assets: [10000, 11500, 10800, 14200, 16500, 18820],
-          buyAndHold: [10000, 12800, 8100, 11800, 14800, 16200]
-        }
-      }
-    };
+
 
     function switchTab(tabId) {
       document.querySelectorAll(".nav-btn").forEach(btn => btn.classList.remove("active"));
@@ -676,7 +651,7 @@
 
         const btTabs = document.getElementById("backtestSymbolTabs");
         btTabs.innerHTML = "";
-        const btSymbols = Object.keys(backtestData);
+        const btSymbols = ["TQQQ", "SOXL", "UPRO"];
         btSymbols.forEach((sym, index) => {
           const btn = document.createElement("button");
           btn.className = `symbol-btn ${index === 0 ? "active" : ""}`;
@@ -793,39 +768,91 @@
       });
     }
 
-    function switchBtSymbol(symbol, targetBtn = null) {
+    async function switchBtSymbol(symbol, targetBtn = null) {
       if (targetBtn) {
         document.querySelectorAll("#backtestSymbolTabs .symbol-btn").forEach(btn => btn.classList.remove("active"));
         targetBtn.classList.add("active");
       }
 
-      const data = backtestData[symbol];
-      const s = data.summary;
+      try {
+        const res = await fetch(`./data/backtest/${symbol}_backtest_result.json`);
+        if (!res.ok) throw new Error("백테스트 결과 로드 실패");
+        const data = await res.json();
 
-      document.getElementById("btReturn").innerText = `+${s.totalReturn.toFixed(1)}%`;
-      document.getElementById("btCagr").innerText = `+${s.cagr.toFixed(1)}%`;
-      document.getElementById("btMdd").innerText = `${s.mdd.toFixed(1)}%`;
-      document.getElementById("btWinRate").innerText = `${s.winRate.toFixed(1)}%`;
+        // 1. KPI 지표 반영
+        const retVal = data.total_return_pct;
+        const cagrVal = data.cagr_pct;
+        const mddVal = data.mdd_pct;
+        const winRateVal = data.total_cycles > 0 ? (data.success_cycles / data.total_cycles) * 100 : 0;
 
-      document.getElementById("btCapital").innerText = `$${s.capital.toLocaleString()}`;
-      document.getElementById("btFinalAsset").innerText = `$${s.finalAsset.toLocaleString()}`;
-      document.getElementById("btCycles").innerText = `${s.cycles}회`;
-      document.getElementById("btDuration").innerText = `${s.duration}일`;
+        document.getElementById("btReturn").innerText = `${retVal >= 0 ? '+' : ''}${retVal.toFixed(2)}%`;
+        document.getElementById("btReturn").className = `kpi-value ${retVal >= 0 ? 'positive' : 'negative'}`;
+        
+        document.getElementById("btCagr").innerText = `${cagrVal >= 0 ? '+' : ''}${cagrVal.toFixed(2)}%`;
+        document.getElementById("btCagr").className = `kpi-value ${cagrVal >= 0 ? 'positive' : 'negative'}`;
+        
+        document.getElementById("btMdd").innerText = `${mddVal.toFixed(2)}%`;
+        document.getElementById("btMdd").className = `kpi-value ${mddVal >= 0 ? 'positive' : 'negative'}`;
+        
+        document.getElementById("btWinRate").innerText = `${winRateVal.toFixed(1)}%`;
 
-      renderBtChart(symbol, data.chart);
+        // 2. 통계 요약 반영
+        document.getElementById("btCapital").innerText = `$${data.total_capital.toLocaleString()}`;
+        document.getElementById("btFinalAsset").innerText = `$${Math.round(data.final_assets).toLocaleString()}`;
+        document.getElementById("btCycles").innerText = `${data.total_cycles}회`;
+        document.getElementById("btDuration").innerText = `${data.avg_cycle_days.toFixed(1)}일`;
+
+        // 3. 차트 렌더링
+        renderBtChart(symbol, data.daily_history);
+
+      } catch (err) {
+        console.error("백테스팅 데이터 연동 에러:", err);
+      }
     }
 
-    function renderBtChart(symbol, chart) {
+    function renderBtChart(symbol, history) {
       if (currentBtChart) currentBtChart.destroy();
+
+      const dates = history.map(h => h.date);
+      const assets = history.map(h => h.total_assets);
+      const bhAssets = history.map(h => h.bh_assets);
+      const dcaAssets = history.map(h => h.dca_assets);
 
       const ctx = document.getElementById("btChart").getContext("2d");
       currentBtChart = new Chart(ctx, {
         type: 'line',
         data: {
-          labels: chart.labels,
+          labels: dates,
           datasets: [
-            { label: '무한매수법 자산 성장 ($)', data: chart.assets, borderColor: '#1a8917', borderWidth: 2, fill: false, pointRadius: 2 },
-            { label: `${symbol} 단순보유 수익 ($)`, data: chart.buyAndHold, borderColor: '#d73a49', borderWidth: 1, borderDash: [2, 2], fill: false, pointRadius: 0 }
+            {
+              label: '무한매수법 자산 ($)',
+              data: assets,
+              borderColor: '#1a8917',
+              borderWidth: 2,
+              fill: false,
+              pointRadius: 0,
+              pointHoverRadius: 4
+            },
+            {
+              label: '거치식 Buy & Hold ($)',
+              data: bhAssets,
+              borderColor: '#d73a49',
+              borderWidth: 1.5,
+              borderDash: [3, 3],
+              fill: false,
+              pointRadius: 0,
+              pointHoverRadius: 4
+            },
+            {
+              label: '적립식 DCA ($)',
+              data: dcaAssets,
+              borderColor: '#0f4c81',
+              borderWidth: 1.5,
+              borderDash: [5, 5],
+              fill: false,
+              pointRadius: 0,
+              pointHoverRadius: 4
+            }
           ]
         },
         options: {
@@ -838,7 +865,13 @@
             }
           },
           scales: {
-            y: { type: 'linear', ticks: { font: { family: 'Nanum Gothic, NanumGothic', size: 10 } } },
+            y: {
+              type: 'linear',
+              ticks: {
+                font: { family: 'Nanum Gothic, NanumGothic', size: 10 },
+                callback: function(value) { return '$' + value.toLocaleString(); }
+              }
+            },
             x: { ticks: { font: { family: 'Nanum Gothic, NanumGothic', size: 10 } } }
           }
         }
